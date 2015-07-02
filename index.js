@@ -21,6 +21,7 @@ var types = [ // Only accept these fields (see the main Reflib project for detai
 	'notes',
 	'address',
 	'researchNotes',
+	'tags',
 ];
 
 var refTypes = [

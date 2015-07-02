@@ -1,7 +1,7 @@
 {
   "name": "reflib-json",
-  "version": "1.0.0",
-  "description": "Parser for JSON files",
+  "version": "1.0.1",
+  "description": "Reflib parser for JSON files",
   "main": "index.js",
   "repository": {
     "type": "git",
