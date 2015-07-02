@@ -3,25 +3,25 @@ var async = require('async-chainable');
 var events = require('events');
 var moment = require('moment');
 
-var types = {
-	'recNumber': 'Number',
-	'type': 'String',
-	'title': 'String',
-	'journal': 'String',
-	'authors': 'Array/String',
-	'date': 'Date',
-	'urls': 'Array/String',
-	'pages': 'String',
-	'volume': 'String',
-	'number': 'String',
-	'isbn': 'String',
-	'abstract': 'String',
-	'label': 'String',
-	'caption': 'String',
-	'notes': 'String',
-	'address': 'String',
-	'researchNotes': 'String',
-};
+var types = [ // Only accept these fields (see the main Reflib project for details)
+	'recNumber',
+	'type',
+	'title',
+	'journal',
+	'authors',
+	'date',
+	'urls',
+	'pages',
+	'volume',
+	'number',
+	'isbn',
+	'abstract',
+	'label',
+	'caption',
+	'notes',
+	'address',
+	'researchNotes',
+];
 
 var refTypes = [
 	'aggregatedDatabase',
@@ -102,13 +102,18 @@ function parse(raw) {
 	return emitter;
 };
 
+function _pusher(arr, rawChild, settings) {
+	var child = _.pick(rawChild, types); // Clip out anything we dont recognise
+	child.type = (rawChild.type && _.contains(types, rawChild.type)) ? child.type : settings.defaultType;
+	arr.push(child);
+};
+
 function output(options) {
 	var settings = _.defaults(options, {
 		stream: null,
 		defaultType: 'report', // Assume this reference type if we are not provided with one
 		content: [],
 	});
-
 	async()
 		// Sanity checks {{{
 		.then(function(next) {
@@ -127,23 +132,23 @@ function output(options) {
 					settings.content(function(err, data) {
 						if (err) return emitter.error(err);
 						if (_.isArray(data)) { // Callback provided array
-							refs.concat(data);
+							data.forEach(function(d) { _pusher(refs, d, settings) });
 							setTimeout(fetcher);
 						} else if(_.isObject(data)) { // Callback provided single ref
-							refs.push(data);
+							_pusher(refs, data, settings);
 							setTimeout(fetcher);
 						} else { // End of stream
-							next(refs);
+							next(null, refs);
 						}
 					}, batchNo++);
 				};
 				fetcher();
 			} else if (_.isArray(settings.content)) { // Array of refs
-				refs.concat(settings.content);
-				next(refs);
+				settings.content.forEach(function(d) { _pusher(refs, d, settings) });
+				next(null, refs);
 			} else if (_.isObject(settings.content)) { // Single ref
-				refs.push(settings.content);
-				next(refs);
+				_pusher(refs, data, settings);
+				next(null, refs);
 			}
 		})
 		// }}}

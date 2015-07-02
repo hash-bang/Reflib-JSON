@@ -63,19 +63,17 @@ describe('JSON output - array input', function() {
 		expect(rlOutput).to.have.length(2);
 
 		expect(_.find(rlOutput, {title: 'Hello World'})).to.deep.equal({
-			recNumber: '1',
 			title: 'Hello World',
 			authors: ['Joe Random', 'John Random'],
 			type: 'report',
-			volume: '1',
+			volume: 1,
 		});
 
 		expect(_.find(rlOutput, {title: 'Goodbye World'})).to.deep.equal({
-			recNumber: '2',
 			title: 'Goodbye World',
 			authors: ['Josh Random', 'Janet Random'],
 			type: 'report',
-			volume: '2',
+			volume: 2,
 		});
 	});
 });
@@ -143,19 +141,17 @@ describe('JSON output - objects via callback', function() {
 		expect(rlOutput).to.have.length(2);
 
 		expect(_.find(rlOutput, {title: 'Hello World'})).to.deep.equal({
-			recNumber: '1',
 			title: 'Hello World',
 			authors: ['Joe Random', 'John Random'],
 			type: 'report',
-			volume: '1',
+			volume: 1,
 		});
 
 		expect(_.find(rlOutput, {title: 'Goodbye World'})).to.deep.equal({
-			recNumber: '2',
 			title: 'Goodbye World',
 			authors: ['Josh Random', 'Janet Random'],
 			type: 'report',
-			volume: '2',
+			volume: 2,
 		});
 	});
 });
@@ -224,19 +220,17 @@ describe('JSON output - array via callback', function() {
 		expect(rlOutput).to.have.length(2);
 
 		expect(_.find(rlOutput, {title: 'Hello World'})).to.deep.equal({
-			recNumber: '1',
 			title: 'Hello World',
 			authors: ['Joe Random', 'John Random'],
 			type: 'report',
-			volume: '1',
+			volume: 1,
 		});
 
 		expect(_.find(rlOutput, {title: 'Goodbye World'})).to.deep.equal({
-			recNumber: '2',
 			title: 'Goodbye World',
 			authors: ['Josh Random', 'Janet Random'],
 			type: 'report',
-			volume: '2',
+			volume: 2,
 		});
 	});
 });
