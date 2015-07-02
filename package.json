@@ -1,0 +1,31 @@
+{
+  "name": "reflib-json",
+  "version": "1.0.3",
+  "description": "Parser for JSON files",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/hash-bang/Reflib-JSON"
+  },
+  "keywords": [
+    "reflib",
+    "json",
+    "references",
+    "library",
+    "parser"
+  ],
+  "author": "Matt Carter <m@ttcarter.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/hash-bang/Reflib-JSON/issues"
+  },
+  "homepage": "https://github.com/hash-bang/Reflib-JSON",
+  "dependencies": {
+    "async-chainable": "^1.7.11",
+    "moment": "^2.10.2"
+  },
+  "devDependencies": {
+    "chai": "^2.3.0",
+    "mocha": "^2.2.4"
+  }
+}
