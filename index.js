@@ -1,4 +1,6 @@
-var _ = require('lodash');
+var _ = require('lodash').mixin({
+	isStream: require('isstream'),
+});
 var async = require('async-chainable');
 var events = require('events');
 var moment = require('moment');
@@ -82,22 +84,39 @@ var validDates = ['MM-DD-YYYY', 'DD/MM/YYYY', 'YYYY-MM-DD'];
 function parse(raw) {
 	var emitter = new events.EventEmitter();
 
-	setTimeout(function() {
-		// Decode stream {{{
+	var decoder = function(content) {
 		var parseErr;
 		try {
-			var json = JSON.parse(raw.toString());
+			var json = JSON.parse(content);
 		} catch(err) {
 			parseErr = err;
 		}
+
 		if (parseErr) return emitter.emit('error', 'Error parsing JSON: ' + parseErr);
-		// }}}
 
 		if (!_.isArray(json)) return emitter.emit('error', 'Input must be a JSON array');
 		json.forEach(function(item) {
 			emitter.emit('ref', item);
 		});
 		emitter.emit('end');
+	};
+
+
+	setTimeout(function() { // Add to next cycle so we can correctly return an emitter
+		if (_.isString(raw) || _.isBuffer(raw)) {
+			decoder(raw.toString());
+		} else if (_.isStream(raw)) {
+			var rawContent = '';
+			raw
+				.on('data', function(data) {
+					rawContent += data;
+				})
+				.on('end', function() {
+					decoder(rawContent);
+				});
+		} else {
+			emitter.emit('error', 'Unknown input type');
+		}
 	});
 
 	return emitter;
@@ -105,7 +124,7 @@ function parse(raw) {
 
 function _pusher(arr, rawChild, settings) {
 	var child = _.pick(rawChild, types); // Clip out anything we dont recognise
-	child.type = (rawChild.type && _.contains(types, rawChild.type)) ? child.type : settings.defaultType;
+	child.type = (rawChild.type && _.includes(types, rawChild.type)) ? child.type : settings.defaultType;
 	arr.push(child);
 };
 

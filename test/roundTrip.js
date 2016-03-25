@@ -32,9 +32,7 @@ describe('JSON file -> object -> buffer', function() {
 							sampleData.push(ref);
 						allData.push(ref);
 					})
-					.on('end', function() {
-						next();
-					});
+					.on('end', next);
 				// }}}
 			})
 			.then(function(next) {
@@ -61,11 +59,13 @@ describe('JSON file -> object -> buffer', function() {
 			.then(function(next) {
 				// Step 3 - Feed JSON back into reflib input {{{
 				step = 3;
+				resCount = 0;
 				rl.parse(output)
 					.on('error', function(err) {
 						next(err);
 					})
 					.on('ref', function(ref) {
+						resCount++;
 						if (ref.isbn == '1097-685X' && ref.title == 'A method for chest drainage after pediatric cardiac surgery: a prospective randomized trial') {
 							sampleData['pediatric-cardiac'] = ref;
 						} else if (ref.title == 'Everolimus immunosuppression in de novo heart transplant recipients: What does the evidence tell us now?') {
@@ -74,10 +74,7 @@ describe('JSON file -> object -> buffer', function() {
 							sampleData['silver-nitrate'] = ref;
 						}
 					})
-					.on('end', function(count) {
-						resCount = count;
-						next();
-					});
+					.on('end', next);
 				// }}}
 			})
 			.end(function(err) {

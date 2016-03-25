@@ -8,7 +8,7 @@ describe('JSON parser - test #2', function() {
 
 	before(function(next) {
 		this.timeout(60 * 1000);
-		rl.parse(fs.readFileSync(__dirname + '/data/endnote2.json'))
+		rl.parse(fs.createReadStream(__dirname + '/data/endnote2.json'))
 			.on('error', function(err) {
 				resErr = err;
 				next();
