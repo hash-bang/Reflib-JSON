@@ -154,12 +154,12 @@ function output(options) {
 				var fetcher = function() {
 					settings.content(function(err, data, isLast) {
 						if (err) return emitter.error(err);
-						if (_.isArray(data)) { // Callback provided array
+						if (_.isArray(data) && data.length > 0) { // Callback provided array
 							data.forEach(function(d, dIndex) {
 								_pusher(settings.stream, isLast && dIndex == data.length-1, d, settings);
 							});
 							setTimeout(fetcher);
-						} else if(_.isObject(data)) { // Callback provided single ref
+						} else if(!_.isArray(data) && _.isObject(data)) { // Callback provided single ref
 							_pusher(settings.stream, isLast, data, settings);
 							setTimeout(fetcher);
 						} else { // End of stream
