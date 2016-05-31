@@ -122,10 +122,10 @@ function parse(raw) {
 	return emitter;
 };
 
-function _pusher(arr, rawChild, settings) {
+function _pusher(arr, isLast, rawChild, settings) {
 	var child = _.pick(rawChild, types); // Clip out anything we dont recognise
 	child.type = (rawChild.type && _.includes(types, rawChild.type)) ? child.type : settings.defaultType;
-	arr.push(child);
+	settings.stream.write(JSON.stringify(child) + (!isLast ? ',' : ''));
 };
 
 function output(options) {
@@ -141,43 +141,56 @@ function output(options) {
 			next();
 		})
 		// }}}
-
+		// Stream start {{{
+		.then(function(next) {
+			settings.stream.write('[');
+			next();
+		})
+		// }}}
 		// References {{{
-		.then('refs', function(next) {
-			var refs = [];
-
+		.then(function(next) {
 			if (_.isFunction(settings.content)) { // Callback
 				var batchNo = 0;
 				var fetcher = function() {
-					settings.content(function(err, data) {
+					settings.content(function(err, data, isLast) {
 						if (err) return emitter.error(err);
 						if (_.isArray(data)) { // Callback provided array
-							data.forEach(function(d) { _pusher(refs, d, settings) });
+							data.forEach(function(d, dIndex) {
+								_pusher(settings.stream, isLast && dIndex == data.length-1, d, settings);
+							});
 							setTimeout(fetcher);
 						} else if(_.isObject(data)) { // Callback provided single ref
-							_pusher(refs, data, settings);
+							_pusher(settings.stream, isLast, data, settings);
 							setTimeout(fetcher);
 						} else { // End of stream
-							next(null, refs);
+							next();
 						}
 					}, batchNo++);
 				};
 				fetcher();
 			} else if (_.isArray(settings.content)) { // Array of refs
-				settings.content.forEach(function(d) { _pusher(refs, d, settings) });
-				next(null, refs);
+				settings.content.forEach(function(d, dIndex) {
+					_pusher(settings.stream, dIndex == settings.content.length -1, d, settings);
+				});
+				next();
 			} else if (_.isObject(settings.content)) { // Single ref
-				_pusher(refs, data, settings);
-				next(null, refs);
+				_pusher(settings.stream, true, data, settings);
+				next();
 			}
 		})
 		// }}}
-
-		.end(function(err) {
-			settings.stream.write(JSON.stringify(this.refs));
+		// Stream end {{{
+		.then(function(next) {
+			settings.stream.write(']');
 			settings.stream.end();
+			next();
+		})
+		// }}}
+		// End {{{
+		.end(function(err) {
 			if (err) throw new Error(err);
 		});
+		// }}}
 
 	return settings.stream;
 }

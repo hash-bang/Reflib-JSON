@@ -125,7 +125,7 @@ describe('JSON output - objects via callback', function() {
 		rl.output({
 			stream: fakeStream,
 			content: function(next, batch) { // Spoon feed each record based on the batch offset
-				next(null, refs[batch]);
+				next(null, refs[batch], batch == refs.length - 1);
 			},
 		});
 
@@ -203,7 +203,7 @@ describe('JSON output - array via callback', function() {
 		rl.output({
 			stream: fakeStream,
 			content: function(next, batch) { // Spoon feed all records on first call only
-				if (batch == 0) return next(null, refs);
+				if (batch == 0) return next(null, refs, true);
 				next();
 			},
 		});
