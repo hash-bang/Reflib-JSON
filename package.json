@@ -1,6 +1,6 @@
 {
   "name": "reflib-json",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "description": "Reflib parser for JSON files",
   "main": "index.js",
   "repository": {
@@ -21,13 +21,13 @@
   },
   "homepage": "https://github.com/hash-bang/Reflib-JSON",
   "dependencies": {
-    "async-chainable": "^1.7.15",
+    "async-chainable": "^2.0.0",
     "isstream": "^0.1.2",
-    "lodash": "^4.6.1",
-    "moment": "^2.12.0"
+    "lodash": "^4.16.1",
+    "moment": "^2.15.1"
   },
   "devDependencies": {
     "chai": "^3.5.0",
-    "mocha": "^2.4.5"
+    "mocha": "^3.0.2"
   }
 }
