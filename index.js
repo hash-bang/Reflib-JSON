@@ -5,13 +5,14 @@ var async = require('async-chainable');
 var events = require('events');
 var moment = require('moment');
 
-var types = [ // Only accept these fields (see the main Reflib project for details)
+var fields = [ // Only accept these fields (see the main Reflib project for details)
 	'recNumber',
 	'type',
 	'title',
 	'journal',
 	'authors',
 	'date',
+	'year',
 	'urls',
 	'pages',
 	'volume',
@@ -24,6 +25,22 @@ var types = [ // Only accept these fields (see the main Reflib project for detai
 	'address',
 	'researchNotes',
 	'keywords',
+	'accessDate',
+	'accession',
+	'doi',
+	'section',
+	'language',
+	'researchNotes',
+	'databaseProvider',
+	'database',
+	'workType',
+	'custom1',
+	'custom2',
+	'custom3',
+	'custom4',
+	'custom5',
+	'custom6',
+	'custom7',
 ];
 
 var refTypes = [
@@ -123,8 +140,8 @@ function parse(raw) {
 };
 
 function _pusher(arr, isLast, rawChild, settings) {
-	var child = _.pick(rawChild, types); // Clip out anything we dont recognise
-	child.type = (rawChild.type && _.includes(types, rawChild.type)) ? child.type : settings.defaultType;
+	var child = _.pick(rawChild, fields); // Clip out anything we dont recognise
+	child.type = (rawChild.type && refTypes.includes(rawChild.type)) ? child.type : settings.defaultType;
 	settings.stream.write(JSON.stringify(child) + (!isLast ? ',' : ''));
 };
 
