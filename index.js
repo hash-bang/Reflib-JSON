@@ -140,8 +140,8 @@ function parse(raw) {
 };
 
 function _pusher(arr, isLast, rawChild, settings) {
-	var child = _.pick(rawChild, fields); // Clip out anything we dont recognise
-	child.type = (rawChild.type && refTypes.includes(rawChild.type)) ? child.type : settings.defaultType;
+	var child = settings.fields === true ? rawChild : _.pick(rawChild, settings.fields); // Clip out anything we dont recognise
+	if (settings.fieldType) child.type = (rawChild.type && refTypes.includes(rawChild.type)) ? child.type : settings.defaultType;
 	settings.stream.write(JSON.stringify(child) + (!isLast ? ',' : ''));
 };
 
@@ -150,7 +150,11 @@ function output(options) {
 		stream: null,
 		defaultType: 'report', // Assume this reference type if we are not provided with one
 		content: [],
+		fields: fields, // Default to filtering by known fields, if falsy everything is exported even if its unknown
 	});
+
+	settings.fieldType = settings.fields === true ? true : settings.fields.includes('type'); // Quick reference boolean as to whether to include the calculated 'type' field
+
 	async()
 		// Sanity checks {{{
 		.then(function(next) {
