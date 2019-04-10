@@ -1,0 +1,61 @@
+{
+	"references":  [
+		{
+			"recNumber": "213",
+			"title": "Clinical screening of epipodophyllotoxin VM26 in malignant lymphomas and solid tumours",
+			"journal": "British Medical Journal",
+			"researchNotes": "Anonymous",
+			"type": "journalArticle",
+			"pages": "744-8",
+			"volume": "2",
+			"number": "5816",
+			"isbn": "0007-1447",
+			"abstract": "Epipodophyllotoxin (VM 26; 4'-demethyl-epipodophyllotoxin-beta-D-thenylidene glucoside) has been proved, in clinical screening, to be able to induce apparently complete remissions and pronounced though incomplete regressions in Hodgkin's disease, reticulosarcoma, and bladder cancer, as well as incomplete regressions in lymphosarcoma. Apparently complete regressions of malignant pleural effusions have been obtained after giving this drug systemically. It has a notable toxic action on the bone marrow.",
+			"label": "OK",
+			"caption": "213",
+			"notes": "U",
+			"date": "Jun 24 1972",
+			"urls": [
+				"http://ovidsp.ovid.com/ovidweb.cgi?T=JS&CSC=Y&NEWS=N&PAGE=fulltext&D=med1&AN=4556544",
+				"http://ZL9EQ5LQ7V.search.serialssolutions.com/?sid=OVID:medline&id=pmid:4556544&id=doi:&issn=0007-1447&isbn=&volume=2&issue=5816&spage=744&pages=744-8&date=1972&title=British+Medical+Journal&atitle=Clinical+screening+of+epipodophyllotoxin+VM26+in+malignant+lymphomas+and+solid+tumours.&aulast=&pid=%3Cauthor%3Eanonymous%3C%2Fauthor%3E%3CAN%3E4556544%3C%2FAN%3E%3CDT%3EClinical+Trial%3C%2FDT%3E"
+			]
+		},
+		{
+			"recNumber": "594",
+			"title": "Epipodophyllotoxin VP 16213 in treatment of acute leukaemias, haematosarcomas, and solid tumours",
+			"journal": "British Medical Journal",
+			"researchNotes": "Anonymous",
+			"type": "journalArticle",
+			"pages": "199-202",
+			"volume": "3",
+			"number": "5873",
+			"isbn": "0007-1447",
+			"abstract": "Epipodophyllotoxin VP 16213 (4-demethyl-epipodophyllotoxin-beta-D-ethylidene glucoside), given to 250 patients with various types of malignant disease, induced apparently complete remissions in four out of eight cases of acute monocytoid and acute myelomonocytoid leukaemia but only one complete regression and six incomplete remissions in 21 cases of reticulosarcoma. Incomplete regressions occurred in patients with Hodgkin's disease, lymphosarcoma, melanoma, and carcinoma of the breast, ovary, testis, bladder, kidney, and thyroid. Seemingly complete regressions of malignant pleural effusion occurred when the drug was given systemically. Toxic side effects interfered with treatment in 40 patients but stopped it in only nine. No signs of toxicity were seen in 114 patients and in 85 the side effects were negligible. VP 16213 represents an advance in the treatment of acute monocytoid leukaemia, which has been up till now insensitive to any drug.",
+			"label": "OK",
+			"caption": "594",
+			"notes": "U",
+			"date": "Jul 28 1973",
+			"urls": [
+				"http://ovidsp.ovid.com/ovidweb.cgi?T=JS&CSC=Y&NEWS=N&PAGE=fulltext&D=med1&AN=4578134",
+				"http://ZL9EQ5LQ7V.search.serialssolutions.com/?sid=OVID:medline&id=pmid:4578134&id=doi:&issn=0007-1447&isbn=&volume=3&issue=5873&spage=199&pages=199-202&date=1973&title=British+Medical+Journal&atitle=Epipodophyllotoxin+VP+16213+in+treatment+of+acute+leukaemias%2C+haematosarcomas%2C+and+solid+tumours.&aulast=&pid=%3Cauthor%3Eanonymous%3C%2Fauthor%3E%3CAN%3E4578134%3C%2FAN%3E%3CDT%3EClinical+Trial%3C%2FDT%3E"
+			]
+		},
+		{
+			"recNumber": "1351",
+			"title": "Postoperative local immunostimulation in non-oatcell bronchial carcinoma",
+			"journal": "Dtsch-Med-Wochenschr",
+			"type": "journalArticle",
+			"pages": "935-940",
+			"volume": "109",
+			"number": "24",
+			"abstract": "In two prospective, randomized clinical studies Corynebacterium parvum (C.p.), BCG or 0.9% saline solution were injected intrapleurally once between the 6th and 12th postoperative day in 878 patients with resected, non-oatcell bronchial carcinoma (stage I and II). The rate of complications following C.p.-instillation (chest pain, fever) was relatively low compared to partially serious complications following injection of BCG, especially in patients who underwent pneumonectomy (21.8% empyrema compared to 3.2% in the placebo group). After an average follow-up of 4.6 years in the first study, 110 of 207 C.p.-treated patients (53%) were dead compared to 82 of 198 in the placebo group (41%). The difference is statistically significant (P < 0.02). In the second study, 79 out of 197 BDG- treated patients (40%) were dead after an average follow-up of 2.8 years compared to 71 out of 208 placebo-treated patients (34%). This difference is not statistically significant. From these data it is concluded that postoperative immunotherapy as performed in these studies is not only of no benefit to the patients, but might even be detrimental as a result of an increased posttherapeutic complication rate and a partially diminished expectation of life. Copyright © 2011 Elsevier B. V., Amsterdam. All Rights Reserved.",
+			"label": "OK",
+			"caption": "1351",
+			"notes": "U",
+			"date": "1984",
+			"urls": [
+				"http://onlinelibrary.wiley.com/o/cochrane/clcentral/articles/435/CN-00174435/frame.html"
+			]
+		}
+	]
+}

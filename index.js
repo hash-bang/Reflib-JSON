@@ -98,13 +98,18 @@ var refTypes = [
 */
 var validDates = ['MM-DD-YYYY', 'DD/MM/YYYY', 'YYYY-MM-DD'];
 
-function parse(raw) {
+function parse(raw, options) {
+	var settings = _.defaults(options, {
+		path: '', // Nested dotted notation / array path to read from
+	});
+
 	var emitter = new events.EventEmitter();
 
 	var decoder = function(content) {
 		var parseErr;
 		try {
 			var json = JSON.parse(content);
+			if (settings.path) json = _.get(json, settings.path);
 		} catch(err) {
 			parseErr = err;
 		}
@@ -148,6 +153,7 @@ function _pusher(arr, isLast, rawChild, settings) {
 function output(options) {
 	var settings = _.defaults(options, {
 		stream: null,
+		path: '', // Nested dotted notation / array path to write references into
 		defaultType: 'report', // Assume this reference type if we are not provided with one
 		content: [],
 		fields: fields, // Default to filtering by known fields, if falsy everything is exported even if its unknown
@@ -164,7 +170,11 @@ function output(options) {
 		// }}}
 		// Stream start {{{
 		.then(function(next) {
-			settings.stream.write('[');
+			if (settings.path) { // Output with path prefix
+				settings.stream.write('{"' + settings.path + '":[');
+			} else { // No path prefix
+				settings.stream.write('[');
+			}
 			next();
 		})
 		// }}}
@@ -202,7 +212,11 @@ function output(options) {
 		// }}}
 		// Stream end {{{
 		.then(function(next) {
-			settings.stream.write(']');
+			if (settings.path) {
+				settings.stream.write(']}');
+			} else { // No path prefix
+				settings.stream.write(']');
+			}
 			settings.stream.end();
 			next();
 		})
