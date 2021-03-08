@@ -1,9 +1,10 @@
-var _ = require('lodash').mixin({
-	isStream: require('isstream'),
-});
+var _ = {
+	get: require('lodash/get'),
+	pick: require('lodash/pick'),
+};
 var async = require('async-chainable');
 var events = require('events');
-var moment = require('moment');
+var stream = require('stream');
 
 var fields = [ // Only accept these fields (see the main Reflib project for details)
 	'recNumber',
@@ -99,9 +100,10 @@ var refTypes = [
 var validDates = ['MM-DD-YYYY', 'DD/MM/YYYY', 'YYYY-MM-DD'];
 
 function parse(raw, options) {
-	var settings = _.defaults(options, {
+	var settings = {
 		path: '', // Nested dotted notation / array path to read from
-	});
+		...options,
+	};
 
 	var emitter = new events.EventEmitter();
 
@@ -116,7 +118,7 @@ function parse(raw, options) {
 
 		if (parseErr) return emitter.emit('error', 'Error parsing JSON: ' + parseErr);
 
-		if (!_.isArray(json)) return emitter.emit('error', 'Input must be a JSON array');
+		if (!Array.isArray(json)) return emitter.emit('error', 'Input must be a JSON array');
 		json.forEach(function(item) {
 			emitter.emit('ref', item);
 		});
@@ -125,9 +127,9 @@ function parse(raw, options) {
 
 
 	setTimeout(function() { // Add to next cycle so we can correctly return an emitter
-		if (_.isString(raw) || _.isBuffer(raw)) {
+		if (typeof raw == 'string' || Buffer.isBuffer(raw)) {
 			decoder(raw.toString());
-		} else if (_.isStream(raw)) {
+		} else if (raw instanceof stream.Stream) {
 			var rawContent = '';
 			raw
 				.on('data', function(data) {
@@ -151,13 +153,14 @@ function _pusher(arr, isLast, rawChild, settings) {
 };
 
 function output(options) {
-	var settings = _.defaults(options, {
+	var settings = {
 		stream: null,
 		path: '', // Nested dotted notation / array path to write references into
 		defaultType: 'report', // Assume this reference type if we are not provided with one
 		content: [],
 		fields: fields, // Default to filtering by known fields, if falsy everything is exported even if its unknown
-	});
+		...options,
+	};
 
 	settings.fieldType = settings.fields === true ? true : settings.fields.includes('type'); // Quick reference boolean as to whether to include the calculated 'type' field
 
@@ -180,17 +183,17 @@ function output(options) {
 		// }}}
 		// References {{{
 		.then(function(next) {
-			if (_.isFunction(settings.content)) { // Callback
+			if (typeof settings.content == 'function') { // Callback
 				var batchNo = 0;
 				var fetcher = function() {
 					settings.content(function(err, data, isLast) {
 						if (err) return emitter.error(err);
-						if (_.isArray(data) && data.length > 0) { // Callback provided array
+						if (Array.isArray(data) && data.length > 0) { // Callback provided array
 							data.forEach(function(d, dIndex) {
 								_pusher(settings.stream, isLast && dIndex == data.length-1, d, settings);
 							});
 							setTimeout(fetcher);
-						} else if(!_.isArray(data) && _.isObject(data)) { // Callback provided single ref
+						} else if(!Array.isArray(data) && typeof data == 'object') { // Callback provided single ref
 							_pusher(settings.stream, isLast, data, settings);
 							setTimeout(fetcher);
 						} else { // End of stream
@@ -199,12 +202,12 @@ function output(options) {
 					}, batchNo++);
 				};
 				fetcher();
-			} else if (_.isArray(settings.content)) { // Array of refs
+			} else if (Array.isArray(settings.content)) { // Array of refs
 				settings.content.forEach(function(d, dIndex) {
 					_pusher(settings.stream, dIndex == settings.content.length -1, d, settings);
 				});
 				next();
-			} else if (_.isObject(settings.content)) { // Single ref
+			} else if (Array.isObject(settings.content)) { // Single ref
 				_pusher(settings.stream, true, data, settings);
 				next();
 			}
